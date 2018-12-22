@@ -21,8 +21,9 @@ namespace CharacterCreator
             //Loop for the menu to run
             while (isRunning)
             {
-                //Generating a new character in order to create one and to access all the functions
+                //Object generation, generating a new one each loop in order to hopefully generate more randomness in the die
                 Character character = new Character();
+                Dice dice = new Dice();
 
                 //Menu 
                 Console.WriteLine("What would you like to do? \n" +
@@ -52,7 +53,7 @@ namespace CharacterCreator
                         Console.WriteLine("All right {0} now its time to roll your stats", character.name);
                         Thread.Sleep(1000);
 
-                        character.StatSelectorAndRolling(character);
+                        character.RollingMenu(character);
                         Console.Clear();
 
                         character.ClassSelector(character);
@@ -145,6 +146,94 @@ namespace CharacterCreator
         public int wisdom = 0;
         public int charisma = 0;
 
+        /// <summary>
+        /// The menu for rolling characters, will send along to auto rolls and also gives an option to roll manually
+        /// </summary>
+        /// <param name="character">Character to roll stats for</param>
+        public void RollingMenu(Character character)
+        {
+            bool isRunning = true;
+
+            while(isRunning)
+            {
+                Console.Clear();
+                Console.WriteLine("What do you want to do for your stats? \n" +
+                        "1. Insert them manually after rolling in real life (I'm sure you wouldn't cheat, right?) \n" +
+                        "2. Let the program roll for you");
+
+                string input = Console.ReadLine();
+                switch(input)
+                {
+                    case "1":
+                        bool manualStatPicking = true;
+
+                        while (manualStatPicking)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("First choose which stat you want to put your roll in to, or write exit when you're done \n" +
+                                "1. Strength: " + character.strength + "\n" +
+                                "2. Dexterity: " + character.dexterity + "\n" +
+                                "3. Constitution: " + character.constitution + "\n" +
+                                "4. Intelligence: " + character.intelligence + "\n" +
+                                "5. Wisdom: " + character.wisdom + "\n" +
+                                "6. Charisma: " + character.charisma + "\n");
+
+                            input = Console.ReadLine();
+
+                            if (input.ToLower() == "exit")
+                                return;
+
+                            Console.WriteLine("What is your roll?");
+
+                            string rollInput = Console.ReadLine();
+                            int roll = 0;
+
+                            try
+                            {
+                                roll = Convert.ToInt32(rollInput); 
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Did you write a number? Try again \n" +
+                                    "Press enter");
+                                Console.ReadKey();
+                            }
+
+                            if(roll > 6)
+                            switch (input.ToLower())
+                            {
+                                    case "1":
+                                        character.strength = character.strength + roll;
+                                        break;
+                                    case "2":
+                                        character.dexterity = character.dexterity + roll;
+                                        break;
+                                    case "3":
+                                        character.constitution = character.constitution + roll;
+                                        break;
+                                    case "4":
+                                        character.intelligence = character.intelligence + roll;
+                                        break;
+                                    case "5":
+                                        character.wisdom = character.wisdom + roll;
+                                        break;
+                                    case "6":
+                                        character.charisma = character.charisma + roll;
+                                        break;
+                                    default:
+                                        Console.WriteLine("Sorry I don't understand");
+                                        break;
+                            }
+                        }
+
+                        break;
+                    case "2":
+                        character.StatSelectorAndRolling(character);
+                        return;
+                }
+            }
+
+        }
 
         /// <summary>
         /// Writing the character sheet to a text document placed on the desktop
@@ -262,7 +351,7 @@ namespace CharacterCreator
         }
 
         /// <summary>
-        /// Rolls three random sixsided die and puts them in a stat
+        /// Rolls four random sixsided die and puts them in a stat
         /// </summary>
         /// <param name="character">Character to roll them for</param>
         public void StatSelectorAndRolling(Character character)
@@ -281,183 +370,184 @@ namespace CharacterCreator
                 bool roll = true;
                 bool statPick = true;
 
-                while (roll)
-                {
-                    //The instance of random being used, only one instance should ever be in your code
-                    Random d6 = new Random();
-
-                    //Loop for shit and giggles, just a visual effect of a rolling die, no functionality
-                    for (int i = 0; i < 3; i += 1)
+                    while (roll)
                     {
-                        for (int a = 1; a <= 6; a += 1)
+                        //The instance of random being used, only one instance should ever be in your code
+                        Random d6 = new Random();
+
+                        //Loop for shit and giggles, just a visual effect of a rolling die, no functionality
+                        for (int i = 0; i < 3; i += 1)
                         {
-                            Console.WriteLine(a);
-                            Thread.Sleep(10);
-                            Console.Clear();
+                            for (int a = 1; a <= 6; a += 1)
+                            {
+                                Console.WriteLine(a);
+                                Thread.Sleep(10);
+                                Console.Clear();
+                            }
                         }
-                    }
-                    //Setting the first die as the first random between 1 and 6 (Random starts at the first number specified and ends at the number before the last number specified)
-                    die1 = d6.Next(1, 7);
+                        //Setting the first die as the first random between 1 and 6 (Random starts at the first number specified and ends at the number before the last number specified)
+                        die1 = d6.Next(1, 7);
 
-                    //See above
-                    for (int i = 0; i < 3; i += 1)
-                    {
-                        for (int a = 1; a <= 6; a += 1)
+                        //See above
+                        for (int i = 0; i < 3; i += 1)
                         {
-                            Console.WriteLine(a);
-                            Thread.Sleep(10);
-                            Console.Clear();
+                            for (int a = 1; a <= 6; a += 1)
+                            {
+                                Console.WriteLine(a);
+                                Thread.Sleep(10);
+                                Console.Clear();
+                            }
                         }
-                    }
 
-                    die2 = d6.Next(1, 7);
+                        die2 = d6.Next(1, 7);
 
-                    //See above
-                    for (int i = 0; i < 3; i += 1)
-                    {
-                        for (int a = 1; a <= 6; a += 1)
+                        //See above
+                        for (int i = 0; i < 3; i += 1)
                         {
-                            Console.WriteLine(a);
-                            Thread.Sleep(10);
-                            Console.Clear();
+                            for (int a = 1; a <= 6; a += 1)
+                            {
+                                Console.WriteLine(a);
+                                Thread.Sleep(10);
+                                Console.Clear();
+                            }
                         }
-                    }
 
-                    die3 = d6.Next(1, 7);
+                        die3 = d6.Next(1, 7);
 
-                    //See above
-                    for (int i = 0; i < 3; i += 1)
-                    {
-                        for (int a = 1; a <= 6; a += 1)
+                        //See above
+                        for (int i = 0; i < 3; i += 1)
                         {
-                            Console.WriteLine(a);
-                            Thread.Sleep(10);
-                            Console.Clear();
+                            for (int a = 1; a <= 6; a += 1)
+                            {
+                                Console.WriteLine(a);
+                                Thread.Sleep(10);
+                                Console.Clear();
+                            }
                         }
-                    }
 
-                    die4 = d6.Next(1, 7);
+                        die4 = d6.Next(1, 7);
 
-                    //Sending the four dies down to the a different function to remove the smallest roll from the batch
-                    rollTotal = DieSelect(die1, die2, die3, die4);
+                        //Sending the four dies down to the a different function to remove the smallest roll from the batch
+                        rollTotal = DieSelect(die1, die2, die3, die4);
 
-                    //If the sum of the dies are less than 6 you will need to reroll, this is what happens here
-                    if (rollTotal < 6)
-                    {
-                        Console.WriteLine("You rolled a {0}, {1}, {2}, {3}, and removing the smallest number you have a total of {4}", die1, die2, die3, die4, rollTotal);
-                        Console.WriteLine("Unfortunately that's not enough to put into a stat, press enter to reroll");
-                        Thread.Sleep(1000);
-                    }
-
-                    //If the roll is above 6 the roll loop will stop
-                    else
-                    {
-                        Console.WriteLine("You rolled a {0}, {1}, {2}, {3} and removing the smallest number you have a total of {4}", die1, die2, die3, die4, rollTotal);
-                        Thread.Sleep(1000);
-                        roll = false;
-                    }
-
-                }
-                //The loop that will start when the roll loop has ended
-                while (statPick)
-                {
-                    //Listing the different stats and their current values, asking for which one the user would like to set as their roll
-                    Console.Clear();
-                    Console.WriteLine("Write the number for the stat you want to place your roll ({6}) do you want to put it? \n" +
-                        "1. Strength {0} \n" +
-                        "2. Dexterity {1} \n" +
-                        "3. Constitution {2} \n" +
-                        "4. Intelligence {3} \n" +
-                        "5. Wisdom {4} \n" +
-                        "6. Charisma {5}", character.strength, character.dexterity, character.constitution, character.intelligence, character.wisdom, character.charisma, rollTotal);
-
-                    string input = Console.ReadLine();
-
-                    //Checking the input, if the input is one of the cases the loop will stop and go all the way back to the first loop which will run 6 times in total
-                    switch (input)
-                    {
-                        //Setting the roll as the strength stat, if there was a race modifier it will also be added through this
-                        case "1":
-
-                            //a test of whether the stat has been picked or not, if it hasn't the loop will stop, if it has the loop will start over, the same goes for the other cases
-                            if (character.strength < 6)
-                            {
-                                character.strength = rollTotal + character.strength;
-                                statPick = false;
-                            }
-                            else
-                            {
-                                Console.WriteLine("That has already been picked, pick a different stat");
-                                Console.ReadKey();
-                            }
-                            break;
-                        case "2":
-                            if (character.dexterity < 6)
-                            {
-                                character.dexterity = rollTotal + character.dexterity;
-                                statPick = false;
-                            }
-                            else
-                            {
-                                Console.WriteLine("That has already been picked, pick a different stat");
-                                Console.ReadKey();
-                            }
-                            break;
-                        case "3":
-                            if (character.constitution < 6)
-                            {
-                                character.constitution = rollTotal + character.constitution;
-                                statPick = false;
-                            }
-                            else
-                            {
-                                Console.WriteLine("That has already been picked, pick a different stat");
-                                Console.ReadKey();
-                            }
-                            break;
-                        case "4":
-                            if (character.intelligence < 6)
-                            {
-                                character.intelligence = rollTotal + character.intelligence;
-                                statPick = false;
-                            }
-                            else
-                            {
-                                Console.WriteLine("That has already been picked, pick a different stat");
-                                Console.ReadKey();
-                            }
-                            break;
-                        case "5":
-                            if (character.wisdom < 6)
-                            {
-                                character.wisdom = rollTotal + character.wisdom;
-                                statPick = false;
-                            }
-                            else
-                            {
-                                Console.WriteLine("That has already been picked, pick a different stat");
-                                Console.ReadKey();
-                            }
-                            break;
-                        case "6":
-                            if (character.charisma < 6)
-                            {
-                                character.charisma = rollTotal + character.charisma;
-                                statPick = false;
-                            }
-                            else
-                            {
-                                Console.WriteLine("That has already been picked, pick a different stat");
-                                Console.ReadKey();
-                            }
-                            break;
-                        //If the user writes something invalid
-                        default:
-                            Console.WriteLine("I'm sorry I don't understand");
+                        //If the sum of the dies are less than 6 you will need to reroll, this is what happens here
+                        if (rollTotal < 6)
+                        {
+                            Console.WriteLine("You rolled a {0}, {1}, {2}, {3}, and removing the smallest number you have a total of {4}", die1, die2, die3, die4, rollTotal);
+                            Console.WriteLine("Unfortunately that's not enough to put into a stat, press enter to reroll");
                             Thread.Sleep(1000);
-                            break;
+                        }
+
+                        //If the roll is above 6 the roll loop will stop
+                        else
+                        {
+                            Console.WriteLine("You rolled a {0}, {1}, {2}, {3} and removing the smallest number you have a total of {4}", die1, die2, die3, die4, rollTotal);
+                            Thread.Sleep(1000);
+                            roll = false;
+                        }
+
                     }
-                }
+                    //The loop that will start when the roll loop has ended
+                    while (statPick)
+                    {
+                        //Listing the different stats and their current values, asking for which one the user would like to set as their roll
+                        Console.Clear();
+                        Console.WriteLine("Write the number for the stat you want to place your roll ({6}) do you want to put it? \n" +
+                            "1. Strength {0} \n" +
+                            "2. Dexterity {1} \n" +
+                            "3. Constitution {2} \n" +
+                            "4. Intelligence {3} \n" +
+                            "5. Wisdom {4} \n" +
+                            "6. Charisma {5}", character.strength, character.dexterity, character.constitution, character.intelligence, character.wisdom, character.charisma, rollTotal);
+
+                        string input = Console.ReadLine();
+
+                        //Checking the input, if the input is one of the cases the loop will stop and go all the way back to the first loop which will run 6 times in total
+                        switch (input)
+                        {
+                            //Setting the roll as the strength stat, if there was a race modifier it will also be added through this
+                            case "1":
+
+                                //a test of whether the stat has been picked or not, if it hasn't the loop will stop, if it has the loop will start over, the same goes for the other cases
+                                if (character.strength < 6)
+                                {
+                                    character.strength = rollTotal + character.strength;
+                                    statPick = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("That has already been picked, pick a different stat");
+                                    Console.ReadKey();
+                                }
+                                break;
+                            case "2":
+                                if (character.dexterity < 6)
+                                {
+                                    character.dexterity = rollTotal + character.dexterity;
+                                    statPick = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("That has already been picked, pick a different stat");
+                                    Console.ReadKey();
+                                }
+                                break;
+                            case "3":
+                                if (character.constitution < 6)
+                                {
+                                    character.constitution = rollTotal + character.constitution;
+                                    statPick = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("That has already been picked, pick a different stat");
+                                    Console.ReadKey();
+                                }
+                                break;
+                            case "4":
+                                if (character.intelligence < 6)
+                                {
+                                    character.intelligence = rollTotal + character.intelligence;
+                                    statPick = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("That has already been picked, pick a different stat");
+                                    Console.ReadKey();
+                                }
+                                break;
+                            case "5":
+                                if (character.wisdom < 6)
+                                {
+                                    character.wisdom = rollTotal + character.wisdom;
+                                    statPick = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("That has already been picked, pick a different stat");
+                                    Console.ReadKey();
+                                }
+                                break;
+                            case "6":
+                                if (character.charisma < 6)
+                                {
+                                    character.charisma = rollTotal + character.charisma;
+                                    statPick = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("That has already been picked, pick a different stat");
+                                    Console.ReadKey();
+                                }
+                                break;
+                            //If the user writes something invalid
+                            default:
+                                Console.WriteLine("I'm sorry I don't understand");
+                                Thread.Sleep(1000);
+                                break;
+                        }
+                    }
+                
             }
         }
 
@@ -895,6 +985,72 @@ namespace CharacterCreator
             Console.ReadKey();
             databaseConnection.Close();
         }
+    }
 
+    class Dice
+    {
+        public Random die = new Random();
+
+
+        public void DieRollingMenu()
+        {
+
+        }
+
+
+        public void RollD4()
+        {
+            int result = die.Next(1, 5);
+            Console.WriteLine(result);
+            Console.ReadKey();
+        }
+
+
+        public void RollD6()
+        {
+            int result = die.Next(1, 7);
+            Console.WriteLine(result);
+            Console.ReadKey();
+        }
+
+
+        public void RollD8()
+        {
+            int result = die.Next(1, 9);
+            Console.WriteLine(result);
+            Console.ReadKey();
+        }
+
+
+        public void RollD10()
+        {
+            int result = die.Next(1, 11);
+            Console.WriteLine(result);
+            Console.ReadKey();
+        }
+
+
+        public void RollD12()
+        {
+            int result = die.Next(1, 13);
+            Console.WriteLine(result);
+            Console.ReadKey();
+        }
+
+
+        public void RollD20()
+        {
+            int result = die.Next(1, 21);
+            Console.WriteLine(result);
+            Console.ReadKey();
+        }
+
+
+        public void RollD100()
+        {
+            int result = die.Next(1, 101);
+            Console.WriteLine(result);
+            Console.ReadKey();
+        }
     }
 }
