@@ -1034,13 +1034,17 @@ namespace CharacterCreator
                     "4. D10 \n" +
                     "5. D12 \n" +
                     "6. D20 \n" +
-                    "7. D%");
-                    input = Console.ReadLine();
+                    "7. D% \n" +
+                    "8. Exit");
 
+                    //Taking only the first char of input
+                    input = Console.ReadLine();
+                    char firstCharInput = input[0];
+                    input = Convert.ToString(firstCharInput);
                     //Test on input
                     try
                     {
-                        int dieSelection = Convert.ToInt32(input[0]);
+                        int dieSelection = Convert.ToInt32(input);
                         if (dieSelection > 8 || dieSelection <= 0)
                         {
                             Console.WriteLine("Something went wrong try again");
@@ -1057,6 +1061,12 @@ namespace CharacterCreator
                         Console.WriteLine("You made a grave mistake, moron");
                         Console.ReadKey();
                         Console.Clear();
+                    }
+
+                    if (input == "8")
+                    {
+                        Console.Clear();
+                        return;
                     }
                 }
 
