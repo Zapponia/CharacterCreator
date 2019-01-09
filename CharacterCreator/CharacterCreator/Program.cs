@@ -911,10 +911,12 @@ namespace CharacterCreator
             //Variable declaration
             bool inputRun = true;
             int IDNumber = 0;
+            bool characterExists = false;
 
             //The same start configuration as in the function "AddToDatabase" 
             string connectionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=characterdatabase;";
             MySqlConnection databaseConnection = new MySqlConnection(connectionString);
+
             string query = "SELECT * FROM characters";
             MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
 
@@ -987,9 +989,18 @@ namespace CharacterCreator
                     "Intelligence: " + reader.GetString(8) + "\n" +
                     "Wisdom: " + reader.GetString(9) + "\n" +
                     "Charisma: " + reader.GetString(10) + "\n");
+                Console.ReadKey();
+                characterExists = true;
             }
-            Console.ReadKey();
+
             databaseConnection.Close();
+
+            if (characterExists == false)
+            {
+                Console.WriteLine("Did you pick a real character?");
+                Console.ReadKey();
+            }
+
         }
     }
 
@@ -1029,11 +1040,12 @@ namespace CharacterCreator
                     //Test on input
                     try
                     {
-                        int dieSelection = Convert.ToInt32(input);
+                        int dieSelection = Convert.ToInt32(input[0]);
                         if (dieSelection > 8 || dieSelection <= 0)
                         {
                             Console.WriteLine("Something went wrong try again");
                             Console.ReadKey();
+                            Console.Clear();
                         }
                         else
                         {
