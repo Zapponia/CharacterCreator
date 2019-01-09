@@ -17,7 +17,6 @@ namespace CharacterCreator
             bool isRunning = true;
             List<Character> CharacterList = new List<Character>();
 
-
             //Loop for the menu to run
             while (isRunning)
             {
@@ -28,7 +27,8 @@ namespace CharacterCreator
                 //Menu 
                 Console.WriteLine("What would you like to do? \n" +
                     "1. See characters from the database \n" +
-                    "2. Create a new character");
+                    "2. Create a new character \n" +
+                    "3. Roll a die");
 
                 //Input to check on
                 string input = Console.ReadLine();
@@ -81,13 +81,17 @@ namespace CharacterCreator
                         character.AddToDatabase(character);
                         break;
 
+                    case "3":
+                        Console.Clear();
+                        dice.DieRollingMenu();
+                        break;
+
                     default:
                         Console.WriteLine("I'm sorry I don't understand");
                         Thread.Sleep(1000);
                         Console.Clear();
                         break;
                 }
-
             }
         }
     }
@@ -253,7 +257,9 @@ namespace CharacterCreator
                 if (input.ToLower() == "yes")
                 {
                     //Setting the path to the desktop, and the file name as "characternameCharacterSheet" so that it will be easy to figure out which one it is
-                    string path = @"C:\Users\Bruger.DESKTOP-7TQE051\Desktop\" + character.name + "CharacterSheet.txt";
+                    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                    desktopPath += "\\";
+                    string path = desktopPath + character.name + "CharacterSheet.txt";
 
                     //What to write to the file \r\n is to switch to the next line
                     string text = "YOUR CHARACTER \r\n" +
@@ -759,7 +765,7 @@ namespace CharacterCreator
             if (character.characterClass == Class.Paladin)
             {
                 Console.WriteLine("Since you're playing Paladin, your alignment has been set as Lawful Good");
-                Console.ReadKey();
+                Thread.Sleep(1000);
                 Console.Clear();
                 character.alignment = Alignment.Lawful_Good;
             }
@@ -854,7 +860,7 @@ namespace CharacterCreator
 
                     //Confirmation of what has been chosen as alignment
                     Console.WriteLine("You have selected {0} as your alignment", character.alignment);
-                    Console.ReadKey();
+                    Thread.Sleep(1000);
                     Console.Clear();
                 }
             }
@@ -991,66 +997,119 @@ namespace CharacterCreator
     {
         public Random die = new Random();
 
-
+        /// <summary>
+        /// A function for rolling dice
+        /// </summary>
         public void DieRollingMenu()
         {
+            //Variable declaration
+            bool isRunning = true;
+            bool numberOfDie = true;
+            bool inputCheck = true;
+            int rollResult = 0;
+            int totalRoll = 0;
+            int numberOfRolls = 0;
+            string input = "";
 
-        }
+            while (isRunning)
+            {
+                //Dice selecting
+                while (inputCheck)
+                {
+                    Console.WriteLine("Which die do you want to roll? \n" +
+                    "1. D4 \n" +
+                    "2. D6 \n" +
+                    "3. D8 \n" +
+                    "4. D10 \n" +
+                    "5. D12 \n" +
+                    "6. D20 \n" +
+                    "7. D%");
+                    input = Console.ReadLine();
 
+                    //Test on input
+                    try
+                    {
+                        int dieSelection = Convert.ToInt32(input);
+                        if (dieSelection > 8 || dieSelection <= 0)
+                        {
+                            Console.WriteLine("Something went wrong try again");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            inputCheck = false;
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("You made a grave mistake, moron");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+                }
 
-        public void RollD4()
-        {
-            int result = die.Next(1, 5);
-            Console.WriteLine(result);
+                //Number of rolls to make
+                while (numberOfDie)
+                {
+                    Console.WriteLine("How many dice do you want to roll?");
+                    string stringNumberOfRolls = Console.ReadLine();
+
+                    //Test on input
+                    try
+                    {
+                        numberOfRolls = Convert.ToInt32(stringNumberOfRolls);
+                        numberOfDie = false;
+                        Console.Clear();
+                    }
+
+                    catch
+                    {
+                        Console.WriteLine("I asked for a number you god damn cockgobbler");
+                    }
+                }
+
+                Console.Clear();
+
+                //Rolling
+                for (int i = 0; i < numberOfRolls; i++)
+                {
+                    switch (input)
+                {
+                    case "1":
+                        rollResult = die.Next(1, 5);
+                        break;
+                    case "2":
+                        rollResult = die.Next(1, 7);
+                        break;
+                    case "3":
+                        rollResult = die.Next(1, 9);
+                        break;
+                    case "4":
+                        rollResult = die.Next(1, 11);
+                        break;
+                    case "5":
+                        rollResult = die.Next(1, 13);
+                        break;
+                    case "6":
+                        rollResult = die.Next(1, 21);
+                        break;
+                    case "7":
+                        rollResult = die.Next(1, 101);
+                        break;
+                    default:
+                        Console.WriteLine("Did you write the correct number?");
+                        break;
+                }
+                    Console.WriteLine(rollResult);
+                    totalRoll += rollResult;
+                }
+
+                isRunning = false;
+            }
+            //End result
+            Console.WriteLine("Your total is " + totalRoll);
             Console.ReadKey();
-        }
-
-
-        public void RollD6()
-        {
-            int result = die.Next(1, 7);
-            Console.WriteLine(result);
-            Console.ReadKey();
-        }
-
-
-        public void RollD8()
-        {
-            int result = die.Next(1, 9);
-            Console.WriteLine(result);
-            Console.ReadKey();
-        }
-
-
-        public void RollD10()
-        {
-            int result = die.Next(1, 11);
-            Console.WriteLine(result);
-            Console.ReadKey();
-        }
-
-
-        public void RollD12()
-        {
-            int result = die.Next(1, 13);
-            Console.WriteLine(result);
-            Console.ReadKey();
-        }
-
-
-        public void RollD20()
-        {
-            int result = die.Next(1, 21);
-            Console.WriteLine(result);
-            Console.ReadKey();
-        }
-
-
-        public void RollD100()
-        {
-            int result = die.Next(1, 101);
-            Console.WriteLine(result);
-            Console.ReadKey();
+            Console.Clear();
         }
     }
 }
