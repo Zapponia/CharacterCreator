@@ -1041,6 +1041,7 @@ namespace CharacterCreator
                     input = Console.ReadLine();
                     char firstCharInput = input[0];
                     input = Convert.ToString(firstCharInput);
+
                     //Test on input
                     try
                     {
